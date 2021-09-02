@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.nadozirny.camunda</groupId>
+  <artifactId>cmmn-http-connector</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <packaging>jar</packaging>
+
+  <name>Camunda BPM CMMN Extention</name>
+  <description>An extention to CMMN workflows</description>
+
+  <properties>
+    <camunda.version>7.7.0</camunda.version>
+    <arquillian.version>1.1.2.Final</arquillian.version>
+    <jboss.version>7.2.1.Final</jboss.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.camunda.bpm</groupId>
+        <artifactId>camunda-bom</artifactId>
+        <version>${camunda.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.camunda.bpm.dmn</groupId>
+        <artifactId>camunda-engine-dmn-bom</artifactId>
+        <version>${camunda.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <!-- process engine, needs to be provided -->
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- decision engine -->
+      <groupId>org.camunda.bpm.dmn</groupId>
+      <artifactId>camunda-engine-dmn</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <!-- client for Java EE application server integration, included in WAR as an alternative to write your own ProcessApplication class -->
+      <groupId>org.camunda.bpm.javaee</groupId>
+      <artifactId>camunda-ejb-client</artifactId>
+    </dependency>
+    <dependency>
+      <!-- CDI integration, needs to be included in WAR, otherwise CDI can not work correctly -->
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-cdi</artifactId>
+    </dependency>
+
+    <dependency>
+      <!-- AssertJ Testing Library -->
+      <groupId>org.camunda.bpm.extension</groupId>
+      <artifactId>camunda-bpm-assert</artifactId>
+      <version>2.0-alpha2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Required to use Spin dataformat support in unit tests -->
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-dataformat-all</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Required to use Connectors in unit tests -->
+    <dependency>
+      <groupId>org.camunda.connect</groupId>
+      <artifactId>camunda-connect-connectors-all</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-connect</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Required to use Templates in unit tests -->
+    <dependency>
+      <groupId>org.camunda.template-engines</groupId>
+      <artifactId>camunda-template-engines-freemarker</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.camunda.template-engines</groupId>
+      <artifactId>camunda-template-engines-velocity</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <!-- Bootstrap for styling via Webjars project -->
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+      <version>2.3.2</version>
+    </dependency>
+
+    <dependency>
+       <groupId>org.jboss.spec</groupId>
+       <artifactId>jboss-javaee-6.0</artifactId>
+       <version>1.0.0.Final</version>
+       <type>pom</type>
+       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <!-- use logback as logger -->
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <!-- apache commons logging => slf4j -->
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.7.7</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <!--  java util logging => slf4j -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>1.7.7</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Add your own dependencies here, if in compile scope, they are added to the war -->
+
+	<dependency>
+    <groupId>org.apache.httpcomponents</groupId>
+    <artifactId>httpclient</artifactId>
+    <version>4.5.10</version>
+    </dependency>
+
+	<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  <version>2.12.5</version>
+</dependency>
+
+	<dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-core</artifactId>
+  <version>2.12.5</version>
+</dependency>
+
+<dependency>
+    <groupId>commons-logging</groupId>
+    <artifactId>commons-logging</artifactId>
+    <version>1.2</version>
+</dependency>
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>camunda-bpm-nexus</id>
+      <name>Camunda BPM Maven Repository</name>
+      <url>https://app.camunda.com/nexus/content/groups/public</url>
+    </repository>
+    <repository>
+      <id>jboss-public-repository</id>
+      <name>JBoss Repository</name>
+      <url>http://repository.jboss.org/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
+
+</project>
